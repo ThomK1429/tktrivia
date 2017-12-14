@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+	<h1>Trivia Game</h1>
+	<div class="counterDiv"> &nbsp; </div>
+	<div class="questionDiv"> &nbsp; </div>
+	<button id="start">START</button> &nbsp;<button id="finish">FINISH</button>
+
+<script>
+
+	// array of questions
+	var questions = ["Question 01", "Question 02", "Question 03", "Questions 04", "Questions 05",
+									 "Question 06", "Question 07", "Question 08", "Questions 09", "Question 10"];
+
+
+	// variable declaration and initialization
+	var questionCtr = 0;
+	var timerSize = 10;
+	var timerCtr = timerSize;
+	var ti
+
+
+	// start the game when the START button is clicked
+	$(document).on("click", "#start", function() {
+			questionCtr = 0;
+			timerCtr = 10;
+			$(".counterDiv").html(timerCtr);
+			$(".questionDiv").text(questions[questionCtr]);
+  		counterFunc();
+
+	});
+
+
+	// stop the game when click button is started
+	$(document).on("click", "#finish", function() {
+			clearInterval(intervalId);
+	});
+
+
+	function counterFunc(){
+
+		intervalId = setInterval(decrement, 1000);
+
+	}
+
+	function decrement() {
+		timerCtr--;
+		
+
+		
+		if(timerCtr <  0) {
+			timerCtr = 10;
+			questionCtr++;
+			console.log ("questionCtr=" +  questionCtr + " questions.length=" + questions.length);
+			if (questionCtr < questions.length)
+				$(".questionDiv").text(questions[questionCtr]);
+			else
+				clearInterval(intervalId);
+		}
+		$(".counterDiv").html(timerCtr);
+
+	}
+
+
+	 
+	</script>
+
+</body>
+</html>

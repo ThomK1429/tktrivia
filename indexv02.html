@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<!-- 
+	1. start with 2 buttons and 2 on click events
+	2. add a counter div, add a counter variable, 		 when Start button is clicked, start counting. 
+		 The counter will just keep counting till you get tired of it. 
+
+	 -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+	<h1>Trivia Game</h1>
+	<div class="counterDiv"> &nbsp; </div>
+
+	<button id="start">START</button> &nbsp;<button id="finish">FINISH</button>
+
+
+
+	<script>
+			// variable declaration and initialization
+			var timerCtr;
+	
+			$(document).on("click", "#start", function() {
+					alert("Start button was clicked")
+					timerCtr = 10;
+					counterFunc();
+			});
+
+
+			$(document).on("click", "#finish", function() {
+					alert("Finish button was clicked")
+			});
+
+			function counterFunc(){
+					$(".counterDiv").html(timerCtr);							// display the inital counter value on the page
+					intervalId = setInterval(decrement, 1000);		// set the timer interval to 1 second
+			}
+
+			function decrement() {
+					timerCtr--;																		// decrement the counter by 1
+					$(".counterDiv").html(timerCtr);							// display the updated counter on the page
+			}
+
+
+
+	 
+	</script>
+
+</body>
+</html>

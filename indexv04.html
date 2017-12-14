@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<!-- indexv  .html versions and how were they updated
+	1. Start with 2 buttons and 2 on click events
+	2. Add a counter div, add a counter variable, 		 when Start button is clicked, start counting. 
+		 The counter will just keep counting till you get tired of it. 
+	3. When the counter hits zero, stop the interval timer and alert a msg. 
+		 Create an clear interval timer function. 
+		 Sdd clear interval timer to the finish button if you want to stop it earlier
+	4. Lets display a trivia question every tmerCtrAmt seconds, in this case every 12 seconds. 
+		 Add an array of questions, add the questions div.
+		 This code will only display 1 question at this time. 
+		 Update the page with the time remaining from a function instead. Same with the question, 
+		 display from a function. 
+
+	 -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+	<h1>Trivia Game</h1>
+	<br><br>
+	<div class="counterDiv"> &nbsp; </div>
+	<div class="questionDiv"> &nbsp; </div>
+	<br><br>
+	<button id="start">START</button> &nbsp;<button id="finish">FINISH</button>
+
+
+
+	<script>
+			// variable declaration and initialization
+
+			// array of questions
+			var questions = ["Question 01", "Question 02", "Question 03", "Questions 04", "Questions 05",
+											 "Question 06", "Question 07", "Question 08", "Questions 09", "Question 10"];
+
+			var timerCtr;																				// interval timer variable
+			var timerCtrAmt = 12;																// set the interval timer amt in one place, here
+			var intervalId;																			// the interval timer id is saved here
+	
+			$(document).on("click", "#start", function() {
+					alert("Start button was clicked, and will start the interval timer.")
+					timerCtr = timerCtrAmt;													// set the interval timer to this amount
+
+					questionCtr = 0;																// start with the 1st question in the array
+					putQuestionToTheDiv();													// put the question in the div
+					counterFunc();																	// start the interval timer
+			});		
+
+
+			$(document).on("click", "#finish", function() {
+					clearIntervalCtr();	
+					alert("Finish button was clicked, and will stop the interval timer.");
+			});
+
+
+			function counterFunc(){														// start the interval timer
+					updateIntervalCtrDiv();												// display the inital counter value on the page
+					intervalId = setInterval(decrement, 1000);		// set the timer interval to 1 second
+			}
+
+
+			function decrement() {
+					timerCtr--;																		// decrement the counter by 1
+					updateIntervalCtrDiv();												// display the updated counter on the page
+					if (timerCtr <= 0)	{													// stop the timer when it hits zero
+							clearIntervalCtr();	
+					}
+
+			}
+
+
+			function clearIntervalCtr(){
+					clearInterval(intervalId);
+			}
+
+
+			function updateIntervalCtrDiv(){										// display the updated counter on the page
+					if (timerCtr < 10)
+							$(".counterDiv").html("0" + timerCtr + " seconds remaining");	// add a zero to make it pretty
+						else
+							$(".counterDiv").html(timerCtr + " seconds remaining");		 
+			}
+
+
+			function putQuestionToTheDiv(){
+					$(".questionDiv").text(questions[questionCtr]);	// put the question in the div	
+			}
+
+	 
+	</script>
+
+</body>
+</html>
