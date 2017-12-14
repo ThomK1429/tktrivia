@@ -39,10 +39,8 @@
 			// variable declaration and initialization
 
 			// array of questions
-			var questionsx = ["Question 01", "Question 02", "Question 03", "Question 04", "Question 05",
+			var questions = ["Question 01", "Question 02", "Question 03", "Question 04", "Question 05",
 											 "Question 06", "Question 07", "Question 08", "Question 09", "Question 10"];
-
-			var questions = ["Question 01", "Question 02", "Question 03", "Question 04"];
 
 			var timerCtr;																				// interval timer variable
 			var timerCtrAmt = 3;																// set the interval timer amt in one place, here
@@ -73,27 +71,27 @@
 
 
 			function decrement() {
-						timerCtr--;																		// decrement the counter by 1
-						if (timerCtr>=0){ 																							// display the updated counter on the page
-								updateIntervalCtrDiv();
-						}
-						else {
-								questionCtr++;
+					timerCtr--;																		// decrement the counter by 1
+					updateIntervalCtrDiv();												// display the updated counter on the page
 
 
-								if((questionCtr + 1) > questions.length) {
-											//alert(questionCtr + " " + questions.length);
-											clearIntervalCtr();	
-											updateMsgDiv();												// no more questions remain, game over. 
-								} else {
-											putQuestionToTheDiv();
-
-											timerCtr = timerCtrAmt;								// reset the timer
-											updateIntervalCtrDiv();	
+					if (timerCtr <  0)	{													// display the next question when the timer is 0
+							questionCtr++;
+							console.log(questionCtr + " " + questions.length);
+							if (questionCtr > questions.length){			// if there are no more questions, stop the timer
+									clearIntervalCtr();	
+									timeCtr = 0;
+									updateIntervalCtrDiv();
+									updateMsgDiv();												// no more questions remain, game over. 
 								}
-						}
-			}
+							  else{
+									putQuestionToTheDiv();
+									timerCtr = timerCtrAmt;								// reset the timer
+									updateIntervalCtrDiv();								// Update the timer divupdateIntervalCtrDiv();	
+							  }
+					}
 
+			}
 
 
 			function clearIntervalCtr(){
@@ -102,7 +100,7 @@
 
 
 			function updateIntervalCtrDiv(){										// display the updated counter on the page
-					if (timerCtr < 10 && timerCtr >=0)
+					if (timerCtr < 10)
 							$(".counterDiv").html("0" + timerCtr + " seconds remaining");	// add a zero to make it pretty
 						else
 							$(".counterDiv").html(timerCtr + " seconds remaining");		 
