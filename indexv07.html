@@ -16,50 +16,76 @@
 		 Update the page with the time remaining from a function instead.  Same with the question, 
 		 display from a function. 
 	5. Now display all the questions every x seconds. 
-
+	6. Display the question
+	7. Display the possible answers, with radio buttons.   Add to right/wrong question counters
+		 Update the comments. 
 	 -->
 
+	<!-- jquery cdn -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 </head>
 
 
 <body>
+	<!-- rough draft of fields to display on the page -->
 	<h1>Trivia Game</h1>
 	<br><br>
-	<div class="counterDiv"> &nbsp; </div>
-	<div class="questionDiv"> &nbsp; </div>
-	<div class="msgDiv"> &nbsp; </div>
-	<br><br>
+	<div class="counterDiv"> 00 seconds remaining </div>
+	<br>
+	<div class="questionDiv">QUESTION 1)&nbsp;&nbsp;&nbsp;&nbsp;</div>
+	<div class="answerDiv"> &nbsp;&nbsp;&nbsp;&nbsp;</div>
+	<br>
+
+	 
 	<button id="start">START</button> &nbsp;<button id="finish">FINISH</button>
+	<br><br>
+	<div class="msgDiv">Click the START button to begin the game.... </div>
 
 
 
 	<script>
 			// variable declaration and initialization
 
-			// array of questions
+			// array of questions - questions x and y were normal array of questions for indexv01-v05.html
+			// renamed to  questionsx and y to disable to the pgm - these were used for initial testing
 			var questionsx = ["Question 01", "Question 02", "Question 03", "Question 04", "Question 05",
 											 "Question 06", "Question 07", "Question 08", "Question 09", "Question 10"];
+			var questionsy = ["Question 01", "Question 02", "Question 03", "Question 04"];
 
-			var questions = ["Question 01", "Question 02", "Question 03", "Question 04"];
 
+			// array of questions and answers - indexv07.html
+			var questions = [{q:'What color is red?' , a:['green', 'red','blue', 'yellow'], sol: '1' },
+											 {q:'What color is green?' , a:['blue', 'yellow', 'red','green'], sol:'3'}
+											]
+			
+
+			// declare the variables
 			var timerCtr;																				// interval timer variable
-			var timerCtrAmt = 3;																// set the interval timer amt in one place, here
-			var intervalId;	
-			var questionCtr;																		// the interval timer id is saved here
+			var timerCtrAmt = 10;																// set the interval timer amt in one place, here
+			var intervalId;																			// the interval timer id is saved here
+			var questionCtr;																		
+			var correct = 0;
+			var wrong = 0;
 	
+
+			//start the game button processing
 			$(document).on("click", "#start", function() {
-					alert("Start button was clicked, and will start the interval timer.")
+					//alert("Start button was clicked, and will start the interval timer.")
+					correct = 0;
+					wrong = 0;
+
 					timerCtr = timerCtrAmt;													// set the interval timer to this amount
 
 					questionCtr = 0;																// start with the 1st question in the array
 					putQuestionToTheDiv();													// put the question in the div
+					putAnswersToTheDiv();
 					$(".msgDiv").text("");													// clear the msgDiv
 					counterFunc();																	// start the interval timer
 			});		
 
 
+			//finish the game button processing
 			$(document).on("click", "#finish", function() {
 					clearIntervalCtr();	
 					updateMsgDiv();																// no more questions remain, game over. 
@@ -67,12 +93,14 @@
 			});
 
 
+			// start the interval counter. call the decrement function once a second  (1000 milliseconds)
 			function counterFunc(){														// start the interval timer
 					updateIntervalCtrDiv();												// display the inital counter value on the page
 					intervalId = setInterval(decrement, 1000);		// set the timer interval to 1 second
 			}
 
 
+			// decrement the interval counter and update the screen
 			function decrement() {
 						timerCtr--;																		// decrement the counter by 1
 						if (timerCtr>=0){ 														// display the updated counter on the page
@@ -88,6 +116,7 @@
 											updateMsgDiv();												// no more questions remain, game over. 
 								} else {
 											putQuestionToTheDiv();
+											putAnswersToTheDiv();
 
 											timerCtr = timerCtrAmt;								// reset the timer
 											updateIntervalCtrDiv();	
@@ -96,12 +125,13 @@
 			}
 
 
-
+			// clear the interval counter
 			function clearIntervalCtr(){
 					clearInterval(intervalId);
 			}
 
 
+			// update the interval counter and put into the div for display
 			function updateIntervalCtrDiv(){										// display the updated counter on the page
 					if (timerCtr < 10 && timerCtr >=0)
 							$(".counterDiv").html("0" + timerCtr + " seconds remaining");	// add a zero to make it pretty
@@ -110,14 +140,48 @@
 			}
 
 
+			// put the qeustion in the div
 			function putQuestionToTheDiv(){
-					$(".questionDiv").text(questions[questionCtr]);	// put the question in the div	
+					//$(".questionDiv").text(questions[questionCtr]);	// put the question in the div	
+					$(".questionDiv").text("QUESTION " + (questionCtr + 1) + ")  " +  questions[questionCtr].q);		// put the question object in the div	
 			}
 
 
+			// put the answers and the radio buttons in the div
+			function putAnswersToTheDiv(){
+					$(".answerDiv").empty();
+
+					for (var j = 0; j < 4; j++) {
+							$(".answerDiv").append("Answer: " + (j+1) + "   " + "  <input type=\"radio\" class=\"test\" name=\"answers\" value=" + j + ">" +    questions[questionCtr].a[j]  );				// put the answer object in the div	
+							$(".answerDiv").append("<br>");
+					}	
+
+			}
+
+
+			// game over, display message
 			function updateMsgDiv(){
 					$(".msgDiv").text("Trivia Game Over");			// put a msg in the msgDiv	
+					alert("Correct=" + correct + " Wrong=" + wrong);
 			}
+
+
+			// process radio button when clicked/checked
+			$(document).on("change",function() {
+        var radioValue = $("input[name='answers']:checked").val();
+        if ( questions[questionCtr].sol == radioValue) {
+        	alert("Correct");
+        	correct++;
+        }
+        else {
+        	alert("Wrong");
+        	wrong++;
+        }
+
+        timerCtr = 0;
+
+    });
+		
 	 
 	</script>
 
